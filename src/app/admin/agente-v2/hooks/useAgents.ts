@@ -387,6 +387,11 @@ export const useAgents = () => {
                   flowiseId: result.data?.canvasId || agent.id,
                   exportedAt: new Date().toISOString(),
                   syncStatus: 'synced' as const 
+                },
+                versionInfo: {
+                  ...a.versionInfo,
+                  originalFlowiseId: result.data?.canvasId || agent.id,
+                  isCustomized: false
                 }
               }
             : a
@@ -424,6 +429,189 @@ export const useAgents = () => {
     }
   };
 
+  const handleSaveCustomConfig = async (agentId: string, customConfig: any) => {
+    try {
+      setAgents(prev => prev.map(agent => 
+        agent.id === agentId 
+          ? { 
+              ...agent, 
+              customConfig,
+              versionInfo: {
+                ...agent.versionInfo,
+                modifiedAt: new Date().toISOString(),
+                isCustomized: true,
+                version: (agent.versionInfo?.version || 0) + 1
+              }
+            }
+          : agent
+      ));
+
+      // Sincronizar configurações personalizadas com o Flowise
+      const agent = agents.find(a => a.id === agentId);
+      if (agent && agent.flowiseConfig?.flowiseId) {
+        const updatedMetadata = {
+          ...agent.customConfig,
+          sourceV2: true,
+          clienteId: agent.cliente?.id,
+          clienteName: agent.cliente?.name,
+          disponivel: agent.disponivel,
+          inputTypes: agent.inputTypes,
+          customConfig: customConfig,
+          versionInfo: {
+            modifiedAt: new Date().toISOString(),
+            isCustomized: true,
+            version: (agent.versionInfo?.version || 0) + 1
+          }
+        };
+
+        await fetch('/api/flowise-external-sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'update_workflow_metadata',
+            canvasId: agent.flowiseConfig.flowiseId,
+            metadata: updatedMetadata
+          })
+        });
+      }
+
+      toast({
+        title: "Configurações salvas",
+        description: "As configurações personalizadas foram salvas com sucesso",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error('Erro ao salvar configurações personalizadas:', error);
+      toast({
+        title: "Erro ao salvar",
+        description: "Não foi possível salvar as configurações personalizadas",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleReExportToFlowise = async (agentId: string) => {
+    try {
+      const agent = agents.find(a => a.id === agentId);
+      if (!agent) {
+        throw new Error('Agente não encontrado');
+      }
+
+      if (!agent.cliente) {
+        toast({
+          title: "Cliente não selecionado",
+          description: "Selecione um cliente antes de re-exportar",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Atualizar status para exportando
+      setAgents(prev => prev.map(a => 
+        a.id === agentId 
+          ? { 
+              ...a, 
+              reExportStatus: {
+                status: 'exporting',
+                exportedAt: new Date().toISOString()
+              }
+            }
+          : a
+      ));
+
+      // Preparar dados para re-exportação com configurações personalizadas
+      const reExportData = {
+        name: agent.customConfig?.name || agent.name,
+        description: agent.customConfig?.description || agent.description,
+        type: 'CHATFLOW',
+        flowData: agent.config || JSON.stringify({
+          nodes: [],
+          edges: [],
+          viewport: { x: 0, y: 0, zoom: 1 }
+        }),
+        deployed: true,
+        isPublic: true,
+        category: agent.customConfig?.category || agent.studioMetadata?.category || 'agents',
+        metadata: {
+          sourceV2: true,
+          isReExport: true,
+          originalFlowiseId: agent.flowiseConfig?.flowiseId,
+          clienteId: agent.cliente.id,
+          clienteName: agent.cliente.name,
+          disponivel: agent.disponivel,
+          inputTypes: agent.inputTypes,
+          customConfig: agent.customConfig,
+          versionInfo: agent.versionInfo,
+          reExportedAt: new Date().toISOString()
+        }
+      };
+
+      const response = await fetch('/api/flowise-external-sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'reexport_workflow',
+          originalCanvasId: agent.flowiseConfig?.flowiseId,
+          workflowData: reExportData
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json() as any;
+        
+        setAgents(prev => prev.map(a => 
+          a.id === agentId 
+            ? { 
+                ...a, 
+                reExportStatus: {
+                  status: 'success',
+                  newFlowiseId: result.data?.canvasId,
+                  exportedAt: new Date().toISOString()
+                },
+                versionInfo: {
+                  ...a.versionInfo,
+                  modifiedAt: new Date().toISOString(),
+                  parentVersion: a.flowiseConfig?.flowiseId,
+                  version: (a.versionInfo?.version || 0) + 1
+                }
+              }
+            : a
+        ));
+
+        toast({
+          title: "Re-exportação bem-sucedida!",
+          description: `Workflow re-exportado para o Flowise com novo ID: ${result.data?.canvasId}`,
+          variant: "default",
+        });
+      } else {
+        throw new Error('Falha na re-exportação');
+      }
+    } catch (error) {
+      console.error('Erro ao re-exportar para Flowise:', error);
+      
+      setAgents(prev => prev.map(a => 
+        a.id === agentId 
+          ? { 
+              ...a, 
+              reExportStatus: {
+                status: 'error',
+                exportedAt: new Date().toISOString(),
+                error: error instanceof Error ? error.message : 'Erro desconhecido'
+              }
+            }
+          : a
+      ));
+
+      toast({
+        title: "Erro na re-exportação",
+        description: "Não foi possível re-exportar o workflow para o Flowise",
+        variant: "destructive",
+      });
+    }
+  };
+
   return {
     agents,
     isLoading,
@@ -437,6 +625,8 @@ export const useAgents = () => {
     handleInputTypesChange,
     sendToFlowise,
     handleExportToFlowise,
+    handleSaveCustomConfig,
+    handleReExportToFlowise,
     setIsLoading,
     setFlowiseConnectionStatus,
     setLastUpdate

@@ -33,6 +33,8 @@ export default function AgenteV2Page() {
     handleDisponibilidadeChange,
     handleInputTypesChange,
     handleExportToFlowise,
+    handleSaveCustomConfig,
+    handleReExportToFlowise,
     setIsLoading,
     setFlowiseConnectionStatus,
     setLastUpdate
@@ -181,6 +183,8 @@ export default function AgenteV2Page() {
                 onDisponibilidadeChange={handleDisponibilidadeChange}
                 onInputTypesChange={handleInputTypesChange}
                 onExportToFlowise={handleExportToFlowise}
+                onSaveCustomConfig={handleSaveCustomConfig}
+                onReExportToFlowise={handleReExportToFlowise}
               />
             ))}
           </div>

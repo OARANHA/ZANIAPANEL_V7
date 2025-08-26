@@ -7,10 +7,12 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Brain, Settings, Eye, Building2, 
-  CheckCircle, AlertTriangle, Cloud, Target
+  CheckCircle, AlertTriangle, Cloud, Target, Edit, Sparkles
 } from 'lucide-react';
+import AgentConfigEditor from './AgentConfigEditor';
 
 // Interfaces
 interface Agent {
@@ -41,6 +43,42 @@ interface Agent {
   exportedToFlowise?: boolean;
   config?: string;
   originalFlowiseData?: any;
+  
+  // Campos editáveis pós-exportação
+  customConfig?: {
+    name?: string;
+    description?: string;
+    category?: string;
+    tags?: string[];
+    systemPrompt?: string;
+    welcomeMessage?: string;
+    temperature?: number;
+    maxTokens?: number;
+    model?: string;
+    customInstructions?: string;
+    businessContext?: string;
+    clientSpecificData?: {
+      [key: string]: any;
+    };
+  };
+  
+  // Controle de versões e modificações
+  versionInfo?: {
+    originalFlowiseId?: string;
+    modifiedAt?: string;
+    modifiedBy?: string;
+    version?: number;
+    parentVersion?: string;
+    isCustomized?: boolean;
+  };
+  
+  // Status de re-exportação
+  reExportStatus?: {
+    status: 'pending' | 'exporting' | 'success' | 'error';
+    newFlowiseId?: string;
+    exportedAt?: string;
+    error?: string;
+  };
 }
 
 interface Cliente {
@@ -50,6 +88,15 @@ interface Cliente {
   status: 'active' | 'inactive' | 'pending';
   company?: string;
   sector?: string;
+  
+  // Campos adicionais para personalização
+  customSettings?: {
+    industry?: string;
+    companySize?: string;
+    targetAudience?: string;
+    brandVoice?: string;
+    specificRequirements?: string[];
+  };
 }
 
 interface AgentCardV2Props {
@@ -59,6 +106,10 @@ interface AgentCardV2Props {
   onDisponibilidadeChange: (agentId: string, disponivel: boolean) => void;
   onInputTypesChange: (agentId: string, inputTypes: ('prompt' | 'prompt_system')[]) => void;
   onExportToFlowise: (agent: Agent) => void;
+  onSaveCustomConfig: (agentId: string, config: any) => void;
+  onReExportToFlowise: (agentId: string) => void;
+  isSaving?: boolean;
+  isExporting?: boolean;
 }
 
 // Componente de Card do Agente V2
@@ -68,11 +119,16 @@ export default function AgentCardV2({
   onClienteChange, 
   onDisponibilidadeChange,
   onInputTypesChange,
-  onExportToFlowise 
+  onExportToFlowise,
+  onSaveCustomConfig,
+  onReExportToFlowise,
+  isSaving = false,
+  isExporting = false
 }: AgentCardV2Props) {
   const [selectedCliente, setSelectedCliente] = useState<string>(agent.cliente?.id || '');
   const [disponivel, setDisponivel] = useState<boolean>(agent.disponivel || false);
   const [inputTypes, setInputTypes] = useState<('prompt' | 'prompt_system')[]>(agent.inputTypes || []);
+  const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
 
   const handleClienteSelect = (clienteId: string) => {
     setSelectedCliente(clienteId);
@@ -91,6 +147,14 @@ export default function AgentCardV2({
       : [...inputTypes, type];
     setInputTypes(newTypes);
     onInputTypesChange(agent.id, newTypes);
+  };
+
+  const handleSaveConfig = (config: any) => {
+    onSaveCustomConfig(agent.id, config);
+  };
+
+  const handleReExport = () => {
+    onReExportToFlowise(agent.id);
   };
 
   const getFlowiseStatusBadge = () => {
@@ -125,6 +189,40 @@ export default function AgentCardV2({
     }
   };
 
+  const getReExportStatusBadge = () => {
+    if (!agent.reExportStatus) {
+      return null;
+    }
+
+    switch (agent.reExportStatus.status) {
+      case 'success':
+        return (
+          <Badge variant="default" className="bg-purple-600">
+            <Sparkles className="w-3 h-3 mr-1" />
+            Re-exportado
+          </Badge>
+        );
+      case 'exporting':
+        return (
+          <Badge variant="outline" className="border-blue-500 text-blue-700">
+            <AlertTriangle className="w-3 h-3 mr-1" />
+            Re-exportando...
+          </Badge>
+        );
+      case 'error':
+        return (
+          <Badge variant="destructive">
+            <AlertTriangle className="w-3 h-3 mr-1" />
+            Erro na Re-exportação
+          </Badge>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const isCustomized = agent.versionInfo?.isCustomized || Boolean(agent.customConfig);
+
   return (
     <Card className="hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-200">
       <CardHeader className="pb-4">
@@ -134,11 +232,17 @@ export default function AgentCardV2({
               <Brain className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-lg font-semibold line-clamp-1">
-                {agent.name}
+              <CardTitle className="text-lg font-semibold line-clamp-1 flex items-center gap-2">
+                {agent.customConfig?.name || agent.name}
+                {isCustomized && (
+                  <Badge variant="default" className="bg-purple-600 text-xs">
+                    <Sparkles className="w-3 h-3 mr-1" />
+                    Personalizado
+                  </Badge>
+                )}
               </CardTitle>
               <CardDescription className="text-sm line-clamp-2">
-                {agent.description}
+                {agent.customConfig?.description || agent.description}
               </CardDescription>
             </div>
           </div>
@@ -147,6 +251,7 @@ export default function AgentCardV2({
               {agent.type === 'workflow' ? 'Workflow' : agent.type}
             </Badge>
             {getFlowiseStatusBadge()}
+            {getReExportStatusBadge()}
           </div>
         </div>
       </CardHeader>
@@ -258,6 +363,16 @@ export default function AgentCardV2({
                 <span className="font-medium">ID Flowise:</span> {agent.flowiseConfig.flowiseId}
               </div>
             )}
+            {agent.reExportStatus?.newFlowiseId && (
+              <div className="text-xs text-purple-600 mt-1">
+                <span className="font-medium">Novo ID:</span> {agent.reExportStatus.newFlowiseId}
+              </div>
+            )}
+            {agent.versionInfo?.version && (
+              <div className="text-xs text-muted-foreground mt-1">
+                <span className="font-medium">Versão:</span> v{agent.versionInfo.version}
+              </div>
+            )}
             {agent.flowiseConfig?.exportedAt && (
               <div className="text-xs text-muted-foreground">
                 <span className="font-medium">Última atualização:</span>{' '}
@@ -274,10 +389,30 @@ export default function AgentCardV2({
               <Eye className="w-4 h-4 mr-1" />
               Detalhes
             </Button>
-            <Button variant="outline" size="sm">
-              <Settings className="w-4 h-4 mr-1" />
-              Configurar
-            </Button>
+            
+            <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Edit className="w-4 h-4 mr-1" />
+                  Configurar
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Configurar Agente - {agent.name}</DialogTitle>
+                  <DialogDescription>
+                    Personalize as configurações do workflow após a exportação do Flowise
+                  </DialogDescription>
+                </DialogHeader>
+                <AgentConfigEditor
+                  agent={agent}
+                  onSave={handleSaveConfig}
+                  onReExport={handleReExport}
+                  isSaving={isSaving}
+                  isExporting={isExporting}
+                />
+              </DialogContent>
+            </Dialog>
           </div>
           
           <Button 
