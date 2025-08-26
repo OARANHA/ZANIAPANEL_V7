@@ -1,0 +1,368 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "E:/ZANAIPAINEL"
+      ],
+      "env": {}
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-git",
+        "--repository",
+        "/path/to/repo"
+      ],
+      "env": {},
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "--db-path",
+        "/path/to/database.db"
+      ],
+      "env": {},
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql: postgresql://cipheruser:cipherpass@localhost:5432/cipherdb --port 3003"
+      ]
+    },
+    "browser-tools": {
+      "command": "cmd",
+      "args": [
+        "bash",
+        "-c",
+        "cmd /c npx -y @agentdeskai/browser-tools-mcp@1.2.0"
+      ],
+      "enabled": true
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "env": {}
+    },
+    "slack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env": {
+        "SLACK_BOT_TOKEN": "<YOUR_BOT_TOKEN>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "openai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-openai"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "<YOUR_OPENAI_KEY>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "huggingface": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-huggingface"
+      ],
+      "env": {
+        "HUGGINGFACE_API_KEY": "<YOUR_HF_KEY>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "anthropic": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-anthropic"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": "<YOUR_ANTHROPIC_KEY>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "replicate": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-replicate"
+      ],
+      "env": {
+        "REPLICATE_API_TOKEN": "<YOUR_REPLICATE_TOKEN>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "pinecone": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-pinecone"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "<YOUR_PINECONE_KEY>",
+        "PINECONE_ENVIRONMENT": "<YOUR_ENV>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "chromadb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-chroma"
+      ],
+      "env": {
+        "CHROMA_SERVER_HOST": "<CHROMA_HOST>",
+        "CHROMA_SERVER_PORT": "<CHROMA_PORT>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "langchain": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-langchain"
+      ],
+      "env": {},
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "llama-index": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-llamaindex"
+      ],
+      "env": {},
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "weaviate": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-weaviate"
+      ],
+      "env": {
+        "WEAVIATE_URL": "<WEAVIATE_URL>",
+        "WEAVIATE_API_KEY": "<WEAVIATE_KEY>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "qdrant": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-qdrant"
+      ],
+      "env": {
+        "QDRANT_URL": "<QDRANT_URL>",
+        "QDRANT_API_KEY": "<QDRANT_KEY>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "milvus": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-milvus"
+      ],
+      "env": {
+        "MILVUS_URL": "<MILVUS_URL>",
+        "MILVUS_TOKEN": "<MILVUS_TOKEN>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "redis": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-redis"
+      ],
+      "env": {
+        "REDIS_URL": "redis://localhost:6379"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "mongodb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-mongodb"
+      ],
+      "env": {
+        "MONGODB_URI": "mongodb://localhost:27017"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-firebase"
+      ],
+      "env": {
+        "FIREBASE_SERVICE_ACCOUNT": "<SERVICE_ACCOUNT_JSON>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-supabase"
+      ],
+      "env": {
+        "SUPABASE_URL": "<SUPABASE_URL>",
+        "SUPABASE_KEY": "<SUPABASE_KEY>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "notion": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-notion"
+      ],
+      "env": {
+        "NOTION_TOKEN": "<NOTION_TOKEN>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "airtable": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-airtable"
+      ],
+      "env": {
+        "AIRTABLE_API_KEY": "<AIRTABLE_KEY>",
+        "AIRTABLE_BASE_ID": "<BASE_ID>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "stripe": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-stripe"
+      ],
+      "env": {
+        "STRIPE_SECRET_KEY": "<STRIPE_KEY>",
+        "STRIPE_WEBHOOK_SECRET": "<WEBHOOK_SECRET>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "twilio": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-twilio"
+      ],
+      "env": {
+        "TWILIO_ACCOUNT_SID": "<SID>",
+        "TWILIO_AUTH_TOKEN": "<TOKEN>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "sendgrid": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sendgrid"
+      ],
+      "env": {
+        "SENDGRID_API_KEY": "<SENDGRID_KEY>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "aws": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-aws"
+      ],
+      "env": {
+        "AWS_ACCESS_KEY_ID": "<AWS_KEY>",
+        "AWS_SECRET_ACCESS_KEY": "<AWS_SECRET>",
+        "AWS_REGION": "us-east-1"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    },
+    "vercel": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-vercel"
+      ],
+      "env": {
+        "VERCEL_TOKEN": "<VERCEL_TOKEN>"
+      },
+      "disabled": true,
+      "alwaysAllow": []
+    }
+  }
+}

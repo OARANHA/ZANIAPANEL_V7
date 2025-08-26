@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-08-24T14:00:58.884Z",
+  "tests": [
+    {
+      "name": "Build Production",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: npm run build\n ⚠ Invalid next.config.ts options detected: \n ⚠     Unrecognized key(s) in object: 'serverComponentsExternalPackages', 'bundlePagesExternals' at \"experimental\"\n ⚠     Unrecognized key(s) in object: 'swcMinify'\n ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config\n ⚠ `experimental.bundlePagesExternals` has been moved to `bundlePagesRouterDependencies`. Please update your next.config.ts file accordingly.\n ⚠ `experimental.serverComponentsExternalPackages` has been moved to `serverExternalPackages`. Please update your next.config.ts file accordingly.\n<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Can't resolve 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master'\n<w> while resolving 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master as file\n<w>  at resolve commonjs E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js\n<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Can't resolve 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master'\n<w> while resolving 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master as file\n<w>  at resolve commonjs E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js\nFailed to compile.\n\n./src/app/admin/agents/page.tsx\nError:   \u001b[31mx\u001b[0m 'import', and 'export' cannot be used outside of module code\n     ,-[\u001b[36;1;4mE:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\src\\app\\admin\\agents\\page.tsx\u001b[0m:124:1]\n \u001b[2m121\u001b[0m |       </span>\n \u001b[2m122\u001b[0m |     </div>\n \u001b[2m123\u001b[0m |   );\n \u001b[2m124\u001b[0m | export default function AgentsPage() {\n     : \u001b[35;1m^^^^^^\u001b[0m\n \u001b[2m125\u001b[0m |   const pathname = usePathname();\n \u001b[2m126\u001b[0m |   const { toast } = useToast();\n \u001b[2m127\u001b[0m |   const [agents, setAgents] = useState<Agent[]>([]);\n     `----\n\nCaused by:\n    Syntax Error\n\nImport trace for requested module:\n./src/app/admin/agents/page.tsx\n\n\n> Build failed because of webpack errors\n"
+    },
+    {
+      "name": "Page Response - Homepage",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000"
+    },
+    {
+      "name": "Page Response - Admin Studio",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000/admin/studio"
+    },
+    {
+      "name": "Page Response - Admin Agents",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000/admin/agents"
+    },
+    {
+      "name": "Page Response - Admin Learning",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000/admin/learning"
+    }
+  ]
+}

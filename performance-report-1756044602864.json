@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-08-24T14:08:11.916Z",
+  "tests": [
+    {
+      "name": "Build Production",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: npm run build\n<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Can't resolve 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master'\n<w> while resolving 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master as file\n<w>  at resolve commonjs E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js\n<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Can't resolve 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master'\n<w> while resolving 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master as file\n<w>  at resolve commonjs E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js\n<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Can't resolve 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master'\n<w> while resolving 'E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js' in E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master as file\n<w>  at resolve commonjs E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\next.config.compiled.js\n ⚠ Compiled with warnings in 97s\n\n./src/app/api/flowise/route.ts\nAttempted import error: 'FlowiseConfigManager' is not exported from '@/lib/flowise-config' (imported as 'FlowiseConfigManager').\n\nImport trace for requested module:\n./src/app/api/flowise/route.ts\n\n./src/app/api/flowise/upload/route.ts\nAttempted import error: 'FlowiseConfigManager' is not exported from '@/lib/flowise-config' (imported as 'FlowiseConfigManager').\n\nImport trace for requested module:\n./src/app/api/flowise/upload/route.ts\n\nunhandledRejection ReferenceError: self is not defined\n    at Object.<anonymous> (E:\\ZANAIPAINEL\\ZANAIPAINEL_V6.3\\ZANAIPAINEL_V6-master\\.next\\server\\vendors.js:1:1) {\n  type: 'ReferenceError'\n}\n"
+    },
+    {
+      "name": "Page Response - Homepage",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000"
+    },
+    {
+      "name": "Page Response - Admin Studio",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000/admin/studio"
+    },
+    {
+      "name": "Page Response - Admin Agents",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000/admin/agents"
+    },
+    {
+      "name": "Page Response - Admin Learning",
+      "duration": null,
+      "status": "failed",
+      "error": "Command failed: curl -w \"%{http_code},%{time_total}\" -s -o /dev/null http://localhost:3000/admin/learning"
+    }
+  ]
+}
